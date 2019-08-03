@@ -1,0 +1,114 @@
+{{#section 'js'}}
+<script>
+    $('.on-click-edit').on('click', function () {
+        var catId = $(this).data('info').catId;
+        var catName = $(this).data('info').catName;
+        var catParent = $(this).data('info').parent;
+
+        $('#editModal .modal-body .idInput').val(catId);
+        $('#editModal .modal-body .nameInput').val(catName);
+        $('#editModal .modal-body .parentInput').val(catParent);
+
+        $('#editModal').modal();
+
+    });
+</script>
+{{/section}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <table class="table table-hover bg-white">
+        <thead>
+            <tr>
+                <th scope="row" class="text-center">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Parent</th>
+                <th scope="col" class="text-right" too>
+                    <a class="btn btn-success btn-sm" href="javascript:;" role="button" data-toggle="modal"
+                        data-target="#addModal" data-placement="bottom" title="Add category">
+                        <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each rows as |cat|}}
+            <tr>
+                <th scope="row" class="text-center">{{cat.catId}}</th>
+                <td>{{cat.catName}}</td>
+                <td>{{cat.parent}}</td>
+                <td class="text-right">
+                    <a class="btn btn-primary btn-sm on-click-edit" href="javascript:;" role="button"
+                        data-placement="bottom" title="Edit"
+                        data-info='{"catId":{{cat.catId}},"catName":"{{cat.catName}}","parent":{{cat.parent}} }'>
+                        <i class="fas fa-fw fa-pencil-alt" aria-hidden="true"></i>
+                    </a>
+                    <form novalidate method="POST" action="/admin/categories/delete" class="d-inline">
+                        <input name="catId" value="{{cat.catId}}" type="hidden">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/categories/add">
+                        <div class="form-group">
+                            <label for="nameInput">Name</label>
+                            <input type="text" class="form-control nameInput" placeholder="Enter category name"
+                                name="catName">
+                        </div>
+                        <div class="form-group">
+                            <label for="parentInput">Parent</label>
+                            <input type="number" class="form-control parentInput" placeholder="Enter parent id"
+                                name="catParent">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/categories/edit">
+                        <div class="form-group">
+                            <label for="idInput">ID</label>
+                            <input type="text" readonly class="form-control idInput" name="catId">
+                        </div>
+                        <div class="form-group">
+                            <label for="nameInput">Name</label>
+                            <input type="text" class="form-control nameInput" placeholder="Enter category name"
+                                name="catName">
+                        </div>
+                        <div class="form-group">
+                            <label for="parentInput">Parent</label>
+                            <input type="number" class="form-control parentInput" placeholder="Enter parent id"
+                                name="catParent">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+{{#section 'js'}}
+<script>
+    $('.on-click-edit').on('click', function () {
+        var idUser = $(this).data('info').idUser;
+
+        $('#editModal .modal-body .idInput').val(idUser);
+        $('#editModal').modal();
+
+    });
+</script>
+{{/section}}
+<div class="container-fluid col-sm-12">
+    <table class="table table-hover bg-white">
+        <thead>
+            <tr>
+                <th scope="row" class="text-center">#</th>
+                <th scope="col">Tên</th>
+                <th scope="col">Email</th>
+                <th scope="col">Vai trò</th>
+                <th scope="col">Ngày đăng kí (subscriber)</th>
+                <th scope="col">Sinh nhật</th>
+                <th scope="col">Bút danh (writer)</th>
+                <th scope="col">Phân công (editor)</th>
+                <th></th>
+                <th scope="col" class="text-right">
+                    <a class="btn btn-success btn-sm" href="javascript:;" role="button" data-toggle="modal"
+                        data-target="#addModal" data-placement="bottom" title="Add tag">
+                        <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each rows as |account|}}
+            <tr>
+                <th scope="row" class="text-center">{{account.userId}}</th>
+                <td>{{account.userName}}</td>
+                <td>{{account.email}}</td>
+                <td>{{account.role}}</td>
+                {{#if account.dateSubscribe}}
+                <td>{{formatDate account.dateSubscribe}}</td>
+                {{else}}
+                <td></td>
+                {{/if}}
+
+                <td>{{formatDate account.birthday}}</td>
+                <td>{{account.nickname}}</td>
+                <td>{{account.catName}}</td>
+                {{#ifEquals account.role 'editor'}}
+                <td class="text-right">
+                    <a class="btn btn-primary btn-sm on-click-edit" href="javascript:;" role="button"
+                        data-toggle="modal" data-info='{"idUser":{{account.userId}} }' data-placement="bottom"
+                        title="Cấp quyền writer">
+                        <i class="fas fa-fw fa-pencil-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+                {{else}}
+                {{#ifEquals account.role 'subscriber'}}
+                <td class="text-right">
+                    <form novalidate method="POST" action="/admin/accounts/auth" class="d-inline">
+                        <input name="userId" value="{{account.userId}}" type="hidden">
+                        <button type="submit" class="btn btn-warning btn-sm" data-placement="bottom"
+                            title="Gia hạn Premium">
+                            <i class="fas fa-fw fa-pencil-alt" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </td>
+                {{else}}
+                <td></td>
+                {{/ifEquals}}
+                {{/ifEquals}}
+                {{#ifEquals account.role 'admin'}}
+
+                {{else}}
+                <td>
+                    <form novalidate method="POST" action="/admin/accounts/delete" class="d-inline">
+                        <input name="userId" value="{{account.userId}}" type="hidden">
+                        <button type="submit" class="btn btn-sm btn-danger" data-placement="bottom"
+                            title="Xóa tài khoản">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+                {{/ifEquals}}
+
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/accounts/add" id="addForm">
+                        <div class="form-group">
+                            <label for="nameInput">Tên</label>
+                            <input type="text" class="form-control" id=" nameInput" name="userName">
+                        </div>
+                        <div class="form-group">
+                            <label for="emailInput">Email</label>
+                            <input type="text" class="form-control" id=" emailInput" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="roleInput">Quyền</label>
+                            <select name="role" id="roleInput" class="form-control">
+                                <option value="admin">Admin</option>
+                                <option value="editor">Editor</option>
+                                <option value="writer">Writer</option>
+                                <option value="subscriber">Subscriber</option>
+                                <option value="guest">Guest</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dobInput">Sinh nhật(YYYY-MM-DD)</label>
+                            <input type="text" class="form-control" id="dobInput" name="birthday">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Thêm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/accounts/edit">
+                        <input type="hidden" class="form-control idInput" name="userId">
+                        <div class="form-group">
+                            <label for="catInput">Chuyên mục</label>
+                            <select name="category" id="catInput" class="form-control">
+                                {{#each lcCategory as |cat|}}
+                                <option value="{{cat.0.catId}}">{{cat.0.catName}}</option>
+                                {{#each cat}}
+                                {{#if @first}}
+                                {{else}}
+                                <option value="{{this.catId}}">{{this.catName}}</option>
+                                {{/if}}
+                                {{/each}}
+                                {{/each}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cấp quyền</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

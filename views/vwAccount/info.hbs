@@ -1,0 +1,108 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<title>Register</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+<style>
+    a:hover {
+        text-decoration: none;
+    }
+
+    @media (max-width: 576px) {
+        article {
+            width: 80vw;
+        }
+    }
+
+    @media (min-width: 576px) {
+        article {
+            width: 30vw;
+        }
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(function () {
+        $('#registerForm').validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 3
+                },
+                nickname: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    remote: {
+                        url: '/account/is-available'
+                    }
+                },
+                dob: {
+                    required: true,
+                    dateISO: true,
+                },
+
+
+            },
+            messages: {
+                username: {
+                    required: 'Your username is required.',
+                    minlength: 'Your username is required.',
+                },
+                nickname: {
+                    required: 'Your nickname is required.',
+                    minlength: 'Your nickname is required.',
+                },
+                email: {
+                    required: 'Please enter a valid email address.',
+                    email: 'Please enter a valid email address.',
+                    remote: 'Your email have already existed'
+                },
+                dob: {
+                    required: 'Valid date of birth is required.',
+                    dateISO: "Please enter a valid date.",
+                    
+                },
+            },
+            errorElement: 'small',
+            errorClass: 'd-block text-danger',
+            highlight: function (e) {
+                $(e).removeClass('is-valid').addClass('is-invalid');
+            },
+            unhighlight: function (e) {
+                $(e).removeClass('is-invalid').addClass('is-valid');
+            }
+        });
+    })
+</script>
+
+
+<div class="card bg-light h-100">
+    <article class="card-body mx-auto">
+        <h4 class="card-title mt-3 text-center">Account Information</h4>
+        <p class="text-center">Change your information</p>
+        <form novalidate action="" method="POST" id="registerForm">
+            <div class="form-group">
+                <input class="form-control d-block" placeholder="Username" type="text" name="username" value="{{name}}">
+            </div>
+            {{#ifEquals role 'writer'}}
+            <div class="form-group">
+                <input class="form-control d-block" placeholder="Nickname" type="text" name="nickname" value="{{../nickname}}">
+            </div>
+            {{/ifEquals}}
+            <div class="form-group">
+                <input class="form-control d-block" placeholder="Email address" type="email" name="email" value="{{email}}">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control d-block" id="txtDOB" placeholder="Birthday" name="dob" value="{{formatISODate birthday}}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Change</button>
+            </div>
+        </form>
+    </article>
+</div>

@@ -1,0 +1,89 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script></script>
+<!------ Include the above in your HEAD tag ---------->
+<title>Login</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+<style>
+  a:hover {
+    text-decoration: none;
+  }
+
+  @media (max-width: 576px) {
+    article {
+      width: 80vw;
+    }
+  }
+
+  @media (min-width: 576px) {
+    article {
+      width: 30vw;
+    }
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+  $(function () {
+
+    $('#registerForm').validate({
+      rules: {
+        email: {
+          required: true,
+          email: true,
+        },
+        password: {
+          required: true,
+          minlength: 6
+        },
+      },
+      messages: {
+        email: {
+          required: 'Please enter a valid email address.',
+          email: 'Please enter a valid email address.'
+        },
+        password: {
+          required: 'Your password is required.',
+          minlength: 'Your password must have at least 6 characters.'
+        },
+      },
+      errorElement: 'small',
+      errorClass: 'd-block text-danger',
+      highlight: function (e) {
+        $(e).removeClass('is-valid').addClass('is-invalid');
+      },
+      unhighlight: function (e) {
+        $(e).removeClass('is-invalid').addClass('is-valid');
+      }
+    });
+  })
+</script>
+
+
+<div class="card bg-light h-100">
+  <article class="card-body mx-auto">
+    <h4 class="card-title mt-3 text-center">Log in</h4>
+    <form novalidate action="" method="POST" id="registerForm">
+      <input hidden type="text" name="previousUrl" value="{{preUrl}}">
+      <div class="form-group">
+        <input class="form-control d-block" placeholder="Email" type="text" name="email" autofocus>
+      </div> <!-- form-group// -->
+      <div class="form-group">
+        <input class="form-control d-block" placeholder="Password" type="password" name="password">
+      </div> <!-- form-group// -->
+      <div class="form-group">
+        <div class="g-recaptcha" data-sitekey="6Le06bAUAAAAAHje2sNfnJ4BY6XMJbH1mxt5euFI"
+          data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
+        <input class="form-control d-none" data-recaptcha="true" required data-error="Please complete the Captcha">
+        <div class="help-block with-errors"></div>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block"> Log in </button>
+      </div> <!-- form-group// -->
+      <p class="text-center">Don't have an account? <a href="/account/register">Register </a>or <a href="/"> <i
+            class="fas fa-fw fa-sign-in-alt"></i> Home</a> </p>
+    </form>
+  </article>
+</div>

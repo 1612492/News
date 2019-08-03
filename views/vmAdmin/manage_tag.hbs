@@ -1,0 +1,100 @@
+{{#section 'js'}}
+<script>
+    $('.on-click-edit').on('click', function () {
+        var tagId = $(this).data('info').tagId;
+        var tagName = $(this).data('info').tagName;
+
+        $('#editModal .modal-body .idInput').val(tagId);
+        $('#editModal .modal-body .nameInput').val(tagName);
+
+        $('#editModal').modal();
+
+    });
+</script>
+{{/section}}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <table class="table table-hover bg-white">
+        <thead>
+            <tr>
+                <th scope="row" class="text-center">#</th>
+                <th scope="col">Tag</th>
+                <th scope="col" class="text-right">
+                    <a class="btn btn-success btn-sm" href="javascript:;" role="button" data-toggle="modal"
+                        data-target="#addModal" data-placement="bottom" title="Add tag">
+                        <i class="fas fa-fw fa-plus" aria-hidden="true"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each rows as |tag|}}
+            <tr>
+                <th scope="row" class="text-center">{{tag.tagId}}</th>
+                <td>{{tag.tagName}}</td>
+                <td class="text-right">
+                    <a class="btn btn-primary btn-sm on-click-edit" href="javascript:;" role="button" data-toggle="modal"
+                        data-placement="bottom" title="Edit"
+                            data-info='{"tagId":{{tag.tagId}},"tagName":"{{tag.tagName}}" }'>
+                        <i class="fas fa-fw fa-pencil-alt" aria-hidden="true"></i>
+                    </a>
+                     <form novalidate method="POST" action="/admin/tags/delete" class="d-inline">
+                        <input name="tagId" value="{{tag.tagId}}" type="hidden">
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add tag</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/tags/add">
+                        <div class="form-group">
+                            <label for="nameInput">Name</label>
+                            <input type="text" class="form-control nameInput" placeholder="Enter tag name"
+                                name="tagName">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit tag</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/admin/tags/edit">
+                        <div class="form-group">
+                            <label for="idInput">ID</label>
+                            <input type="text" readonly class="form-control idInput" name="tagId">
+                        </div>
+                        <div class="form-group">
+                            <label for="nameInput">Name</label>
+                            <input type="text" class="form-control nameInput" placeholder="Enter tag name"
+                                name="tagName">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

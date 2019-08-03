@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zxx" class="no-js">
+	<head>
+		<!-- Mobile Specific Meta -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Favicon-->
+		<link rel="shortcut icon" href="/img/fav.png">
+		<!-- Author Meta -->
+		<meta name="author" content="colorlib">
+		<!-- Meta Description -->
+		<meta name="description" content="">
+		<!-- Meta Keyword -->
+		<meta name="keywords" content="">
+		<!-- meta character set -->
+		<meta charset="UTF-8">
+		<!-- Site Title -->
+		<title>{{title}}</title>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/css/main.css">
+		{{{_sections.css}}}
+	</head>
+	<body>
+		<header>			
+			<div class="header-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="d-flex justify-content-end">
+								{{#if name}}
+								<a href="/account/info"><span>{{name}}</span></a>
+								<a href="/account/logout">Đăng xuất</a>
+								{{else}}
+								<a href="/account/register">Đăng kí</a>
+								<a href="/account/login">Đăng nhập</a>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="logo-wrap">
+				<div class="container">
+					<div class="row justify-content-between align-items-center">
+						<div class="col-lg-4 col-md-4 col-sm-12 p-0">
+							<a href="/">
+								<img class="img-fluid pl-90 logo" src="/img/logo.png" alt="">
+							</a>
+						</div>
+						<div class="col-lg-8 col-md-8 col-sm-12 p-0">
+							<img class="img-fluid" src="/img/banner-ads.jpg" alt="Ads here">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container main-menu p-0" id="main-menu">
+				<div class="row align-items-center justify-content-between">
+					<div class="col-lg-8 col-md-4">
+						<ul class="nav-menu" id="nav-menu-container">
+							<li class="icon"><a onclick="expandNav()">&#9776;</a></li>
+							<li class="list-item {{#if isActive}} item-active{{/if}}"><a href="/">Trang chủ</a></li>
+							{{#each lcCategory as |alias|}}
+							<li class="list-item {{#ifEquals ../idActive alias.0.catId}} item-active{{/ifEquals}}"><a href="/category/{{alias.0.catId}}">{{alias.0.catName}}</a>
+								<ul>
+									{{#each alias}}
+									{{#if @first}}
+									{{else}}
+										<li><a href="/category/{{this.catId}}">{{this.catName}}</a></li>
+									{{/if}}
+									{{/each}}
+								</ul>
+							</li>
+							{{/each}}
+						</ul>
+					</div><!-- #nav-menu-container -->
+					<div class="col-lg-4 col-md-4">
+						<form class="search" id="search"  method="POST" action="/search">
+							<input type="text" class="form-control search-box" name="search" id="search-box" placeholder="Search">
+							<label for="search-box" class="search-box-label">
+								<span class="lnr"><i class="fas fa-search"></i></span>
+							</label>
+							<span class="search-close">
+								<span class="lnr"><i class="fas fa-times"></i></span>
+							</span>
+						</form>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		<div class="site-main-container">
+			{{{body}}}
+		</div>
+		
+		<footer class="footer-area section-gap">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 col-md-12 single-footer-widget">
+						<a href="/">
+							<img class="img-fluid pl-90 logo" src="/img/logo.png" alt="">
+						</a>
+					</div>
+					<div class="col-lg-6 col-md-12 single-footer-widget">
+						<span>
+							Tổng biên tập: Nguyễn Hữu Nguyên.<br> 
+							Thư ký tòa soạn: Võ Tấn Phát<br>
+							Phó thư ký tòa soạn: Nguyễn Thị Thúy<br>
+							Tòa soạn: Số 35 Nam Kỳ Khởi Nghĩa, Quận 1, Thành phố Hồ Chí Minh. <br>
+							Điện thoại: (8428) 3829 5936; Fax: (8428) 3829 4294; Email: online@abc.vn <br>
+							Bản quyền thuộc về NTP-Group.
+						</span>
+					</div>
+				</div>
+			</div>
+		</footer>	
+
+		<script src="/js/script.js"></script>	
+		{{{_sections.js}}}
+	</body>
+</html>

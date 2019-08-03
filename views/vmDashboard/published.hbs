@@ -1,0 +1,25 @@
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    {{#each rows as |post|}}
+    <div class="row card shadow mb-4 border-left-success col-md-10 col-sm-12 p-0">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between col-md-12 col-sm-12">
+            <h6 class="m-0 font-weight-bold text-success">{{post.title}}</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body row">
+            <div class="col-md-3 col-sm-12 d-flex align-items-center justify-content-center">
+                <img style="height: 120px; width: 90%" src="{{post.srcImage}}" alt="">
+            </div>
+            <div class="col-md-9 col-sm-12">
+                <span class="badge badge-success">{{post.catName}}</span>
+                <div>
+                    <span class="text-secondary">Ngày xuất bản:</span>
+                    <span class="text-secondary">{{formatDate post.datePost}}</span>
+                </div>
+                <div>{{post.subTitle}}</div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

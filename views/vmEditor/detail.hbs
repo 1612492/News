@@ -1,0 +1,103 @@
+{{#section 'css'}}
+<style>
+    @media (max-width: 500px) {
+
+        img {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        iframe {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    }
+</style>
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+<script>
+    $(function () {
+        $('#acceptForm').validate({
+            rules: {
+                datePost: {
+                    required: true,
+                    dateISO: true,
+                },
+            },
+            messages: {
+                datePost: {
+                    required: 'Valid date is required.',
+                    dateISO: "Please enter a valid date.",
+                },
+            },
+            errorElement: 'small',
+            errorClass: 'd-block text-danger',
+            highlight: function (e) {
+                $(e).removeClass('is-valid').addClass('is-invalid');
+            },
+            unhighlight: function (e) {
+                $(e).removeClass('is-invalid').addClass('is-valid');
+            }
+        });
+    })
+</script>
+{{/section}}
+<div class="card col-lg-6 col-sm-12 mb-5">
+    <div class="card-body">
+        <h5 class="card-title">{{post.0.title}}</h5>
+        <p class="card-text"><i class="fas fa-fw fa-user">&nbsp;</i>{{post.0.nickname}}</p>
+        <p class="card-text">{{{post.0.content}}}</p>
+        {{#if tags}}<span>tags:&nbsp;</span>{{/if}}
+        {{#each tags as |tag|}}
+        <span class="badge badge-primary">{{tag.tagName}}</span></a>
+        {{/each}}
+        <div class="mt-5">
+            <a class="btn btn-outline-primary mx-5 float-right" href="javascript:;" role="button" data-toggle="modal"
+                data-target="#acceptModal">
+                Duyệt
+            </a>
+            <a class="btn btn-outline-danger mx-1 float-right" href="javascript:;" role="button" data-toggle="modal"
+                data-target="#rejectModal">
+                Từ chối
+            </a>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/editor/pending/accept" id="acceptForm">
+                        <input type="hidden" name="postId" value="{{post.0.postId}}">
+                        <div class="form-group">
+                            <label for="publishDate">Ngày xuất bản (YYYY-MM-YY)</label>
+                            <input type="text" class="form-control" id="publishDate" name="datePost">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Duyệt</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form novalidate method="POST" action="/editor/pending/reject">
+                        <input type="hidden" name="postId" value="{{post.0.postId}}">
+                        <div class="form-group">
+                            <label for="reason">Lý do từ chối</label>
+                            <input type="text" class="form-control" id="reason"
+                                placeholder="Nhập lý do từ chối bài viết" name="reasonReject">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Từ chối</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

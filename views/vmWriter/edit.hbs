@@ -1,0 +1,93 @@
+{{#section 'js'}}
+<script type="text/javascript" src='/tinymce/tinymce.min.js'></script>
+<script type="text/javascript">
+    tinymce.init({
+        language: 'vi_VN',
+        menubar: false,
+        plugins: 'autoresize paste image link media wordcount noneditable',
+        toolbar: 'undo redo | bold italic underline strikethrough | link image media',
+        max_height: 720,
+        content_css: '/css/editor-style.css',
+        skin: 'lightgray',
+        mobile: { theme: 'mobile' },
+        media_poster: false,
+        selector: '#contentInput',
+    });
+</script>
+{{/section}}
+<div class="col-lg-7 col-sm-12"></div>
+<form method="POST" action="">
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <div class="form-group">
+                <label for="titleInput">Tiêu đề</label>
+                <input type="text" class="form-control" id="titleInput" placeholder="Nhập tiêu đề bài viết" name="title"
+                    value="{{post.0.title}}">
+            </div>
+            <div class="form-group">
+                <label for="abstractInput">Tóm tắt</label>
+                <input type="text" class="form-control" id="abstractInput" placeholder="Nhập nội dung tóm tắt"
+                    name="abstract" value="{{post.0.subTitle}}">
+            </div>
+            <div class="form-group">
+                <label for="imageInput">Link hình ảnh</label>
+                <input type="text" class="form-control" id="imageInput" placeholder="Nhập link hình ảnh" name="image"
+                    value="{{post.0.srcImage}}">
+            </div>
+            <div class="form-group">
+                <label for="catInput">Chuyên mục</label>
+                <input type="text" class="form-control" id="oldCatInput" readonly value="{{post.0.catName}}">
+            </div>
+            <div class="form-group">
+                <label for="catInput">Chọn lại chuyên mục</label>
+                <select name="category" id="catInput" class="form-control">
+                    {{#each lcCategory as |cat|}}
+                    <option value="{{cat.0.catId}}">{{cat.0.catName}}</option>
+                    {{#each cat}}
+                    {{#if @first}}
+                    {{else}}
+                    <option value="{{this.catId}}">{{this.catName}}</option>
+                    {{/if}}
+                    {{/each}}
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="typeInput">Loại bài viết</label>
+                <select name="type" id="typeInput" class="form-control">
+                    {{#ifEquals post.0.type 'standard'}}
+                    <option value="standard" selected>Standard</option>
+                    <option value="premium">Premium</option>
+                    {{else}}
+                    <option value="standard">Standard</option>
+                    <option value="premium" selected>Premium</option>
+                    {{/ifEquals}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="oldTag">Nhãn đã chọn</label>
+                <select id="oldTag" class="form-control">
+                    {{#each tagPost as |tag|}}
+                    <option>{{tag.tagName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tagsInput">Chọn nhãn mới</label>
+                <select multiple class="form-control" id="tagsInput" name="tags" style="height: 500px;">
+                    {{#each tags as |tag|}}
+                    <option value="{{tag.tagId}}">{{tag.tagName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+            <div class="form-group">
+                <label for="contentInput">Nội dung</label>
+                <textarea id="contentInput" name="content">{{post.0.content}}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary float-right">Cập nhật</button>
+        </div>
+    </div>
+
+</form>
