@@ -1,6 +1,7 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <!------ Include the above in your HEAD tag ---------->
 <title>Register</title>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
@@ -65,7 +66,7 @@
                 dob: {
                     required: 'Valid date of birth is required.',
                     dateISO: "Please enter a valid date.",
-                    
+
                 },
             },
             errorElement: 'small',
@@ -75,6 +76,22 @@
             },
             unhighlight: function (e) {
                 $(e).removeClass('is-invalid').addClass('is-valid');
+            }
+        });
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#registerForm').on('submit', function (event) {
+
+            var recaptcha = $("#g-recaptcha-response").val();
+            if (recaptcha === "") {
+                event.preventDefault();
+                $('<small style="margin-top: -5px; margin-bottom: 5px;" class="d-block text-danger">Please check this checkbox</small>').insertAfter('.g-recaptcha');
+            }
+            else {
+                $('<small style="margin-top: -5px; margin-bottom: 5px;" class="d-block text-danger">Please check this checkbox</small>').remove();
             }
         });
     })
@@ -91,15 +108,19 @@
             </div>
             {{#ifEquals role 'writer'}}
             <div class="form-group">
-                <input class="form-control d-block" placeholder="Nickname" type="text" name="nickname" value="{{../nickname}}">
+                <input class="form-control d-block" placeholder="Nickname" type="text" name="nickname"
+                    value="{{../nickname}}">
             </div>
             {{/ifEquals}}
             <div class="form-group">
-                <input class="form-control d-block" placeholder="Email address" type="email" name="email" value="{{email}}">
+                <input class="form-control d-block" placeholder="Email address" type="email" name="email"
+                    value="{{email}}">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control d-block" id="txtDOB" placeholder="Birthday" name="dob" value="{{formatISODate birthday}}">
+                <input type="text" class="form-control d-block" id="txtDOB" placeholder="Birthday" name="dob"
+                    value="{{formatISODate birthday}}">
             </div>
+            <div class="g-recaptcha form-group" data-sitekey="6LcWG7EUAAAAAC_zyIcwOaZ6tbWMPG5dSj2-_yfT"></div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Change</button>
             </div>

@@ -60,6 +60,21 @@
     });
   })
 </script>
+<script>
+  $(document).ready(function () {
+    $('#registerForm').on('submit', function (event) {
+
+      var recaptcha = $("#g-recaptcha-response").val();
+      if (recaptcha === "") {
+        event.preventDefault();
+        $('<small style="margin-top: -5px; margin-bottom: 5px;" class="d-block text-danger">Please check this checkbox</small>').insertAfter('.g-recaptcha');
+      }
+      else {
+        $('<small style="margin-top: -5px; margin-bottom: 5px;" class="d-block text-danger">Please check this checkbox</small>').remove();
+      }
+    });
+  })
+</script>
 
 
 <div class="card bg-light h-100">
@@ -73,12 +88,7 @@
       <div class="form-group">
         <input class="form-control d-block" placeholder="Password" type="password" name="password">
       </div> <!-- form-group// -->
-      <div class="form-group">
-        <div class="g-recaptcha" data-sitekey="6Le06bAUAAAAAHje2sNfnJ4BY6XMJbH1mxt5euFI"
-          data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
-        <input class="form-control d-none" data-recaptcha="true" required data-error="Please complete the Captcha">
-        <div class="help-block with-errors"></div>
-      </div>
+      <div class="g-recaptcha form-group w-100" data-sitekey="6LcWG7EUAAAAAC_zyIcwOaZ6tbWMPG5dSj2-_yfT"></div>
       <div class="form-group">
         <button type="submit" class="btn btn-primary btn-block"> Log in </button>
       </div> <!-- form-group// -->
