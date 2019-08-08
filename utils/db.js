@@ -2,11 +2,11 @@ var mysql = require('mysql');
 
 var createConnection = () => {
     return mysql.createConnection({
-      host: 'localhost',
+      host: 'remotemysql.com',
       port: 3306,
-      user: 'root',
-      password: '12345',
-      database: 'news'
+      user: 'xeN8g17n96',
+      password: 'rS209v2rd9',
+      database: 'xeN8g17n96'
     });
   }
 
