@@ -1,11 +1,12 @@
 var express = require('express');
 var morgan = require('morgan');
+const PORT = process.env.PORT || 3000;
 
 var app = express();
 
 var role = require('./middlewares/role.mdw');
 
-//app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
@@ -38,6 +39,6 @@ app.use((req, res, next) => {
     res.render('404', { layout: false });
 });
 
-app.listen(3000, () => {
-    console.log('Server is running at http://localhost:3000');
+app.listen(PORT, () => {
+    console.log(`Server is running at port ${PORT}`);
 })
